@@ -1,7 +1,5 @@
 # Web3 Project 
 
----
-
 ## Technologies 
 
 - Moralis EVM Api
