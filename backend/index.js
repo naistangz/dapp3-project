@@ -81,3 +81,48 @@ app.get('/tokenBalances', async(req, res) => {
       res.send(e);
       }
     })
+
+app.get("/tokenTransfers", async(req, res) => {
+  await Moralis.start({apiKey: process.env.MORALIS_API_KEY});
+
+  try {
+    const {address, chain } = req.query;
+    const response = await Moralis.EvmApi.token.getWalletTokenTransfers({
+      address: address,
+      chain: chain,
+    });
+       const userTrans = resposne.data.result;
+      let userTransDetails = [];
+      for (let i =0; i < userTrans.length; i++){
+        const metaResponse = await Moralis.EvmApi.token.getTokenMetadata({
+          addresses: [userTrans[i].address],
+          chain: chain,
+        });
+       if (metaResponse.data) {
+        userTrans[i].decimals = metaResposne.data[0].decimals;
+        userTrans[i].symbol = metaResponse.data[0].symbol;
+        userTransDetails.push(userTrans[i]);
+      } else {
+        console.log("No details for coin");
+        }
+      }
+
+       res.send(userTrans);
+  } catch(e){
+    res.send(e)
+  }
+})
+
+app.get("/nftBalance", async (req, res) => {
+  await Moralis.start({ apiKey: process.env.MORALIS_API_KEY});
+
+  try {
+    const response = await Moralis.EvmApi.nft.getWalletNFTs({
+      address: address,
+      chain: chain,
+    })
+    res.send(response.data);
+  } catch(e){
+    res.send(e)
+  }
+})
