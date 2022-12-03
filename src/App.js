@@ -16,6 +16,7 @@ function App() {
     const [transfers, setTransfers] = useState([]);
     const [nfts, setNfts] = useState([]);
 
+
   return (
     <div className="App">
         <WalletInputs
